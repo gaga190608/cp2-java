@@ -11,22 +11,39 @@ public class Entrega implements com.logistica.interfaces.Rastreavel {
 
     public Entrega(int id, String nomeCliente, String enderecoDestino, double peso) {
         this.id = id;
-        this.nomeCliente = nomeCliente;
-        this.enderecoDestino = enderecoDestino;
+        this.nomeCliente = nomeCliente.trim();           
+        this.enderecoDestino = enderecoDestino.trim();   
         this.peso = peso;
         this.status = "PENDENTE";
         this.entregadorResponsavel = "Nenhum";
     }
 
+
     public void atualizarStatus(String novoStatus) {
-        this.status = novoStatus;
-        System.out.println("Status atualizado para: " + novoStatus);
+        if (novoStatus == null || novoStatus.trim().isEmpty()) {  
+            System.out.println("Erro: status não pode ser vazio.");
+            return;
+        }
+        this.status = novoStatus.trim().toUpperCase();           
+        System.out.println("Status atualizado para: " + this.status);
     }
 
     public void atualizarStatus(String novoStatus, String mensagem) {
-        this.status = novoStatus;
-        System.out.println("Status atualizado para: " + novoStatus);
-        System.out.println("Mensagem: " + mensagem);
+        if (novoStatus == null || novoStatus.trim().isEmpty()) {  
+            System.out.println("Erro: status não pode ser vazio.");
+            return;
+        }
+        if (mensagem == null || mensagem.trim().isEmpty()) {     
+            System.out.println("Erro: mensagem não pode ser vazia.");
+            return;
+        }
+        if (mensagem.trim().length() > 100) {                     
+            System.out.println("Erro: mensagem não pode ter mais de 100 caracteres.");
+            return;
+        }
+        this.status = novoStatus.trim().toUpperCase();           
+        System.out.println("Status atualizado para: " + this.status);
+        System.out.println("Mensagem: " + mensagem.trim());      
     }
 
     @Override
