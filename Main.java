@@ -22,7 +22,7 @@ public class Main {
         int opcao = 0;
 
         System.out.println("======================================");
-        System.out.println("  BEM-VINDO AO SISTEMA DE LOGÍSTICA  ");
+        System.out.println("  BEM-VINDO AO SISTEMA DE LOGISTICA  ");
         System.out.println("======================================");
 
         while (opcao != 6) {
@@ -67,10 +67,21 @@ public class Main {
         sc.nextLine();
 
         System.out.print("Nome do entregador: ");
-        String nome = sc.nextLine();
+        String nome = sc.nextLine().trim();  
 
-        System.out.print("CPF: ");
-        String cpf = sc.nextLine();
+        
+        if (nome.isEmpty() || nome.length() < 3) {
+            System.out.println("Erro: nome inválido. Deve ter pelo menos 3 caracteres.");
+            return;
+        }
+
+        System.out.print("CPF (somente números, 11 dígitos): ");
+        String cpf = sc.nextLine().trim();  
+
+        if (cpf.length() != 11) {
+            System.out.println("Erro: CPF inválido. Deve conter exatamente 11 dígitos.");
+            return;
+        }
 
         Entregador novoEntregador = null;
 
@@ -96,13 +107,28 @@ public class Main {
         sc.nextLine();
 
         System.out.print("Nome do cliente: ");
-        String nomeCliente = sc.nextLine();
+        String nomeCliente = sc.nextLine().trim();  
+
+        if (nomeCliente.isEmpty() || nomeCliente.length() < 3) {
+            System.out.println("Erro: nome do cliente inválido. Deve ter pelo menos 3 caracteres.");
+            return;
+        }
 
         System.out.print("Endereço de destino: ");
-        String endereco = sc.nextLine();
+        String endereco = sc.nextLine().trim();  
+
+        if (endereco.isEmpty() || endereco.length() < 5) {
+            System.out.println("Erro: endereço inválido. Deve ter pelo menos 5 caracteres.");
+            return;
+        }
 
         System.out.print("Peso do pacote (kg): ");
         double peso = sc.nextDouble();
+
+        if (peso <= 0) {
+            System.out.println("Erro: peso deve ser maior que zero.");
+            return;
+        }
 
         Entrega novaEntrega = new Entrega(proximoIdEntrega, nomeCliente, endereco, peso);
         entregas.add(novaEntrega);
@@ -187,6 +213,11 @@ public class Main {
             return;
         }
 
+        if (!entregaSelecionada.getStatus().contains("PENDENTE")) {
+            System.out.println("Erro: essa entrega não está mais pendente.");
+            return;
+        }
+
         if (entregaSelecionada.getPeso() > entregadorSelecionado.getCapacidadeMaximaKg()) {
             System.out.println("Erro: pacote muito pesado para esse entregador!");
             System.out.println("Capacidade máxima: " + entregadorSelecionado.getCapacidadeMaximaKg() + "kg");
@@ -198,12 +229,21 @@ public class Main {
 
         System.out.print("Distância estimada em km: ");
         double distancia = sc.nextDouble();
+
+        if (distancia <= 0) {
+            System.out.println("Erro: distância deve ser maior que zero.");
+            return;
+        }
+
         double custo = entregadorSelecionado.calcularCustoEntrega(distancia);
+
+        int custoInteiro = (int) custo;
 
         entregaSelecionada.atualizarStatus("EM_ROTA",
             "Entregador " + entregadorSelecionado.getNome() + " saiu para entrega!");
 
         System.out.println("Custo estimado: R$ " + String.format("%.2f", custo));
+        System.out.println("Custo aproximado (sem centavos): R$ " + custoInteiro); 
         System.out.println(entregaSelecionada.obterLocalizacaoAtual());
     }
 }
