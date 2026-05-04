@@ -1,4 +1,4 @@
-package com.logistica;
+package com.logistica.logistica;
 
 import com.logistica.model.Entrega;
 import com.logistica.model.Entregador;
