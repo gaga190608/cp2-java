@@ -10,8 +10,8 @@ public abstract class Entregador {
 
     public Entregador(int id, String nome, String cpf) {
         this.id = id;
-        this.nome = nome;
-        this.cpf = cpf;
+        this.nome = nome.trim();  
+        this.cpf = cpf.trim();   
         this.disponivel = true;
     }
 
